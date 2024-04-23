@@ -16,9 +16,9 @@ namespace MortgageTests
         {
             MortgageData data = new MortgageData()
             {
-                Bank = "ПАО СБЕРБАНК",
-                BalanceDebt = "5555444",
-                BidPercent = "20",
+                Bank = "ПАО \"СБЕРБАНК\"",
+                OutstandingAmount = "5555444",
+                AnnualInterestRate = "20",
                 DateCreditStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy"),
                 DateCreditEnd = DateTime.Now.AddDays(7).AddYears(20).ToString("dd.MM.yyyy"),
                 DatePolicyStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy")

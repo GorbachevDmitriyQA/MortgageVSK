@@ -27,8 +27,10 @@ namespace MortgageTests
             options.AddExtension(@"c:\Users\Dmitry\source\repos\GorbachevDmitriyQA\morrtgage\Mortgage\Mortgage\Browsec-VPN.crx");
             string vpn = @"c:\Users\Dmitry\source\repos\GorbachevDmitriyQA\morrtgage\Mortgage\Mortgage\Browsec-VPN.crx";
             options.AddArgument(vpn);
-            driver = new ChromeDriver(options);
             baseURL = "https://www.vsk.ru/klientam";
+            driver = new ChromeDriver(options);
+            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+            driver.Url = baseURL;
             Navigator = new NavigationHelper(this);
             Mortgage = new MortgageHelper(this);
         }

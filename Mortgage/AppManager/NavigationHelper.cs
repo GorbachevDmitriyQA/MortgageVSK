@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace MortgageTests
 {
@@ -12,7 +15,8 @@ namespace MortgageTests
 
         public void OpenMortgagePage()
         {
-            driver.Url = manager.baseURL + "/ipoteka";
+            //TO DO добавить ожидаение появления элемента перед нажатием
+            driver.FindElement(By.CssSelector("li[id='mortgage']")).Click();
             Thread.Sleep(1500);
         }
     }

@@ -10,8 +10,8 @@ namespace MortgageTests
     {
         public static int DateCreditDaysValue = 0;
         public string Bank {  get; set; }
-        public string BalanceDebt { get; set; }
-        public string BidPercent { get; set; }
+        public string OutstandingAmount { get; set; }
+        public string AnnualInterestRate { get; set; }
         public string DateCreditStart { get; set; } 
         public string DateCreditEnd { get; set;} 
         public string DatePolicyStart { get; set;}
