@@ -1,19 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MortgageTests
 {
-    public class MortgageData
+    public class MortgageData :IEquatable<MortgageData>
     {
-        public static int DateCreditDaysValue = 0;
         public string Bank {  get; set; }
         public string OutstandingAmount { get; set; }
         public string AnnualInterestRate { get; set; }
         public string DateCreditStart { get; set; } 
         public string DateCreditEnd { get; set;} 
         public string DatePolicyStart { get; set;}
+        public string DatePolicyEnd { get; set; }
+        public string InsurancePeriod { get; set; }
+
+
+        public bool Equals(MortgageData other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return DatePolicyEnd == other.DatePolicyEnd;
+        }
+
     }
 }

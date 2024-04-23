@@ -14,17 +14,21 @@ namespace MortgageTests
         [Test]
         public void CreateMortgagePolicy()
         {
-            MortgageData data = new MortgageData()
+            MortgageData creationData = new MortgageData()
             {
                 Bank = "ПАО \"СБЕРБАНК\"",
                 OutstandingAmount = "5555444",
                 AnnualInterestRate = "20",
                 DateCreditStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy"),
                 DateCreditEnd = DateTime.Now.AddDays(7).AddYears(20).ToString("dd.MM.yyyy"),
-                DatePolicyStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy")
+                DatePolicyStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy"),
+                DatePolicyEnd = DateTime.Now.AddDays(6).AddYears(1).ToString("dd.MM.yyyy"),
             };
             app.Navigator.OpenMortgagePage();
-            app.Mortgage.CreatePolicy(data);
+            app.Mortgage.CreatePolicy(creationData);
+            MortgageData existingData = app.Mortgage.ConditionMortgagePolicyInfo();
+            Assert.AreEqual(creationData.DatePolicyEnd, existingData.DatePolicyEnd);
+
         }
     }
 }

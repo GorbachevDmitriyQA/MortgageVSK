@@ -61,6 +61,38 @@ namespace MortgageTests
             }
             //List<string> tabs = new List<string>(driver.WindowHandles);
             //driver.SwitchTo().Window(tabs[1]);
+            // driver.SwitchTo().Window(driver.WindowHandles.Last());
+        }
+
+
+        //TO DO Причесать получение элементов + подумать надо ли что то склеивать
+        public MortgageData ConditionMortgagePolicyInfo()
+        {
+            MortgageData data = new MortgageData();
+            ICollection<IWebElement> bankName =
+                driver.FindElements(By.XPath(".//div[contains(text(), 'Банк')]/.."));
+            foreach (IWebElement webElement in bankName)
+            {
+                var bank = webElement.FindElements(By.TagName("div"));
+                data.Bank = bank[1].Text;
+            }
+            ICollection<IWebElement> insurancePeriod =
+                driver.FindElements(By.XPath(".//div[contains(text(), ' Срок страхования')]/.."));
+            foreach (IWebElement webElement in insurancePeriod)
+            {
+                var date = webElement.FindElements(By.TagName("div"));
+                data.InsurancePeriod = date[1].Text;
+            }
+            ICollection<IWebElement> insuredSum =
+                driver.FindElements(By.XPath(".//div[contains(text(), 'Страховая сумма')]/.."));
+            foreach (IWebElement webElement in  insuredSum)
+            {
+                var sum = webElement.FindElements(By.TagName("div"));
+                data.OutstandingAmount = sum[1].Text;
+            }
+            data.DatePolicyEnd = driver.FindElement(By.CssSelector("[testing-id='DESIRED_END_DATE_POLICY'] input"))
+                .GetAttribute("value");
+            return data;
         }
     }
 }
