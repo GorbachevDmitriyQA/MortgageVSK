@@ -24,8 +24,9 @@ namespace MortgageTests
         {
             SelectBank(data);
             driver.FindElement(By.CssSelector("[testing-id='OUTSTANDING_AMOUNT'] input")).Click();
-            driver.FindElement(By.CssSelector("[testing-id='OUTSTANDING_AMOUNT'] input")).Clear();
+            driver.FindElement(By.CssSelector("[testing-id='OUTSTANDING_AMOUNT'] input")).SendKeys(Keys.Home);
             driver.FindElement(By.CssSelector("[testing-id='OUTSTANDING_AMOUNT'] input")).SendKeys(data.OutstandingAmount);
+            driver.FindElement(By.CssSelector("[testing-id='ANNUAL_INTEREST_RATE'] input")).SendKeys(Keys.Home);
             driver.FindElement(By.CssSelector("[testing-id='ANNUAL_INTEREST_RATE'] input")).SendKeys(data.AnnualInterestRate);
             driver.FindElement(By.CssSelector("[testing-id='LOAN_START_CONTRACT_DATE'] input")).SendKeys(data.DateCreditStart);
             driver.FindElement(By.CssSelector("[testing-id='LOAN_END_CONTRACT_DATE'] input")).SendKeys(data.DateCreditEnd);
@@ -69,30 +70,65 @@ namespace MortgageTests
         public MortgageData ConditionMortgagePolicyInfo()
         {
             MortgageData data = new MortgageData();
-            ICollection<IWebElement> bankName =
-                driver.FindElements(By.XPath(".//div[contains(text(), 'Банк')]/.."));
-            foreach (IWebElement webElement in bankName)
-            {
-                var bank = webElement.FindElements(By.TagName("div"));
-                data.Bank = bank[1].Text;
-            }
-            ICollection<IWebElement> insurancePeriod =
-                driver.FindElements(By.XPath(".//div[contains(text(), ' Срок страхования')]/.."));
-            foreach (IWebElement webElement in insurancePeriod)
-            {
-                var date = webElement.FindElements(By.TagName("div"));
-                data.InsurancePeriod = date[1].Text;
-            }
-            ICollection<IWebElement> insuredSum =
-                driver.FindElements(By.XPath(".//div[contains(text(), 'Страховая сумма')]/.."));
-            foreach (IWebElement webElement in  insuredSum)
-            {
-                var sum = webElement.FindElements(By.TagName("div"));
-                data.OutstandingAmount = sum[1].Text;
-            }
-            data.DatePolicyEnd = driver.FindElement(By.CssSelector("[testing-id='DESIRED_END_DATE_POLICY'] input"))
-                .GetAttribute("value");
+            data.Bank =
+                driver.FindElement(By.XPath("//div[contains(text(),'Банк')]/following-sibling::div")).Text;
+            data.InsurancePeriod =
+                driver.FindElement(By.XPath("//div[contains(text(),' Срок страхования')]/following-sibling::div"))
+                .Text.Split(" ");
+            data.DatePolicyStart = data.InsurancePeriod[0];
+            data.DatePolicyEnd = data.InsurancePeriod[2];
+            data.OutstandingAmount =
+                driver.FindElement(By.XPath("//div[contains(text(),'Страховая сумма')]/following-sibling::div"))
+                .Text.Replace("₽", "").Replace(" ", "");
+            data.PolicySum = driver.FindElement(By.XPath("//div[@testingid='sum']"))
+                .GetAttribute("innerText").Replace("— ₽", "").Replace("₽", "");
+
             return data;
+        }
+
+        public bool VerifyFieldDatePolicyEnd(MortgageData data)
+        {
+            string trueDatePolicyEnd = driver.FindElement(By.CssSelector("[testing-id='DESIRED_END_DATE_POLICY'] input"))
+                .GetAttribute("value");
+            if (trueDatePolicyEnd is null)
+            {
+                return false;
+            }
+            if (data.DatePolicyEnd == trueDatePolicyEnd)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool VerifyEmptyPolicySum(MortgageData data)
+        {
+            if (data.PolicySum.Length == 0)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        public bool GoToStepProcessingButtonIsActive()
+        {
+            bool buttonIsActive = false;
+
+            for (int i = 0; i < 3; i++)
+            {
+                string willValidateButton = driver.FindElement(By.CssSelector("button[testingid='goToStepProcessing']"))
+                    .GetAttribute("willValidate");
+                if (willValidateButton == "true")
+                {
+                    buttonIsActive = true;
+                    break;
+                }
+                else
+                {
+                    Thread.Sleep(3000);
+                }
+            }
+            return buttonIsActive;
         }
     }
 }

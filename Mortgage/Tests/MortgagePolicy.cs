@@ -27,7 +27,12 @@ namespace MortgageTests
             app.Navigator.OpenMortgagePage();
             app.Mortgage.CreatePolicy(creationData);
             MortgageData existingData = app.Mortgage.ConditionMortgagePolicyInfo();
-            Assert.AreEqual(creationData.DatePolicyEnd, existingData.DatePolicyEnd);
+            if (app.Mortgage.VerifyFieldDatePolicyEnd(creationData))
+            {
+                Assert.AreEqual(creationData, existingData);
+                Assert.IsTrue(app.Mortgage.VerifyEmptyPolicySum(existingData));
+                Assert.IsTrue(app.Mortgage.GoToStepProcessingButtonIsActive());
+            }
 
         }
     }

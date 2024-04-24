@@ -17,8 +17,9 @@ namespace MortgageTests
         public string DateCreditEnd { get; set;} 
         public string DatePolicyStart { get; set;}
         public string DatePolicyEnd { get; set; }
-        public string InsurancePeriod { get; set; }
+        public string[] InsurancePeriod { get; set; }
 
+        public string PolicySum { get; set; } 
 
         public bool Equals(MortgageData other)
         {
@@ -26,11 +27,15 @@ namespace MortgageTests
             {
                 return false;
             }
-            if (Object.ReferenceEquals(this, other))
+            if (other.Bank == Bank
+                && other.OutstandingAmount == OutstandingAmount
+                && other.DatePolicyStart == DatePolicyStart
+                && other.DatePolicyEnd == DatePolicyEnd)
             {
                 return true;
             }
-            return DatePolicyEnd == other.DatePolicyEnd;
+            return false;
+
         }
 
     }
