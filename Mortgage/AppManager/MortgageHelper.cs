@@ -14,8 +14,9 @@ namespace MortgageTests
     {
         public MortgageHelper(AppManager manager) : base(manager) { }
 
-        public void CreatePolicy(MortgageData data)
+        public void FillPolicyFields(MortgageData data)
         {
+            manager.Navigator.OpenMortgagePage();
             InitBuyPolicy();
             FillPolicyForm(data);
         }
@@ -37,13 +38,16 @@ namespace MortgageTests
         {
             driver.FindElement(By.CssSelector("[testing-id='BANK_NAME']")).Click();
             ICollection<IWebElement> button = driver.FindElements(By.CssSelector("[role='listbox'] button"));
-            //TO DO подумать как прокинуть exeption если кнопки не найдется
             foreach (IWebElement buttonElement in button)
             {
                 if (buttonElement.Text == data.Bank)
                 {
                     buttonElement.Click();
                     return;
+                }
+                else
+                {
+                    throw new Exception(data.Bank + "Не найден при заполнении полиса");
                 }
             }
         }
@@ -64,9 +68,6 @@ namespace MortgageTests
             //driver.SwitchTo().Window(tabs[1]);
             // driver.SwitchTo().Window(driver.WindowHandles.Last());
         }
-
-
-        //TO DO Причесать получение элементов + подумать надо ли что то склеивать
         public MortgageData ConditionMortgagePolicyInfo()
         {
             MortgageData data = new MortgageData();
@@ -81,7 +82,7 @@ namespace MortgageTests
                 driver.FindElement(By.XPath("//div[contains(text(),'Страховая сумма')]/following-sibling::div"))
                 .Text.Replace("₽", "").Replace(" ", "");
             data.PolicySum = driver.FindElement(By.XPath("//div[@testingid='sum']"))
-                .GetAttribute("innerText").Replace("— ₽", "").Replace("₽", "");
+                .GetAttribute("innerText");
 
             return data;
         }
@@ -103,7 +104,7 @@ namespace MortgageTests
 
         public bool VerifyEmptyPolicySum(MortgageData data)
         {
-            if (data.PolicySum.Length == 0)
+            if (data.PolicySum == "— ₽")
             {
                 return true;
             }
@@ -117,8 +118,8 @@ namespace MortgageTests
             for (int i = 0; i < 3; i++)
             {
                 string willValidateButton = driver.FindElement(By.CssSelector("button[testingid='goToStepProcessing']"))
-                    .GetAttribute("willValidate");
-                if (willValidateButton == "true")
+                    .GetAttribute("disabled");
+                if (willValidateButton is null)
                 {
                     buttonIsActive = true;
                     break;

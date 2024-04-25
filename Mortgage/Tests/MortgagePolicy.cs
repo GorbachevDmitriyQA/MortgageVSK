@@ -11,8 +11,13 @@ namespace MortgageTests
     [TestFixture]
     public class MortgagePolicy :TestBase
     {
+        /// <summary>
+        /// Основной кейс описанный в тестовом задании. 
+        /// Примечание: сумма полиса будет пустая без выбора "Типа страхования"
+        /// по данной причине проверки реализованы с учетом пустой суммы
+        /// </summary>
         [Test]
-        public void CreateMortgagePolicy()
+        public void FillingFieldsMortgagePolicy()
         {
             MortgageData creationData = new MortgageData()
             {
@@ -24,15 +29,10 @@ namespace MortgageTests
                 DatePolicyStart = DateTime.Now.AddDays(7).ToString("dd.MM.yyyy"),
                 DatePolicyEnd = DateTime.Now.AddDays(6).AddYears(1).ToString("dd.MM.yyyy"),
             };
-            app.Navigator.OpenMortgagePage();
-            app.Mortgage.CreatePolicy(creationData);
+            app.Mortgage.FillPolicyFields(creationData);
             MortgageData existingData = app.Mortgage.ConditionMortgagePolicyInfo();
-            if (app.Mortgage.VerifyFieldDatePolicyEnd(creationData))
-            {
-                Assert.AreEqual(creationData, existingData);
-                Assert.IsTrue(app.Mortgage.VerifyEmptyPolicySum(existingData));
-                Assert.IsTrue(app.Mortgage.GoToStepProcessingButtonIsActive());
-            }
+            app.MortgageValidator.FillingFieldsMortgageValidate(creationData, existingData);
+
 
         }
     }

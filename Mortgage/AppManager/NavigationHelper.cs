@@ -15,7 +15,6 @@ namespace MortgageTests
 
         public void OpenMortgagePage()
         {
-            //TO DO добавить ожидаение появления элемента перед нажатием
             driver.FindElement(By.CssSelector("li[id='mortgage']")).Click();
             Thread.Sleep(1500);
         }

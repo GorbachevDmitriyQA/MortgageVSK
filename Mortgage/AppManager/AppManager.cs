@@ -24,15 +24,13 @@ namespace MortgageTests
             ChromeOptions options = new ChromeOptions();
             options.BinaryLocation = @"c:\program files (x86)\google\chrome\application\chrome.exe";
             options.AddArgument("start-maximized");
-            options.AddExtension(@"c:\Users\Dmitry\source\repos\GorbachevDmitriyQA\morrtgage\Mortgage\Mortgage\Browsec-VPN.crx");
-            string vpn = @"c:\Users\Dmitry\source\repos\GorbachevDmitriyQA\morrtgage\Mortgage\Mortgage\Browsec-VPN.crx";
-            options.AddArgument(vpn);
             baseURL = "https://www.vsk.ru/klientam";
             driver = new ChromeDriver(options);
             driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
             driver.Url = baseURL;
             Navigator = new NavigationHelper(this);
             Mortgage = new MortgageHelper(this);
+            MortgageValidator = new MortgageValidateHepler(this);
         }
         public IWebDriver Driver
         {
@@ -41,6 +39,7 @@ namespace MortgageTests
 
         public NavigationHelper Navigator { get; set; }
         public MortgageHelper Mortgage { get; set; }
+        public MortgageValidateHepler MortgageValidator { get; set; }
     }
 
 }

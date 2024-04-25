@@ -18,7 +18,6 @@ namespace MortgageTests
         public string DatePolicyStart { get; set;}
         public string DatePolicyEnd { get; set; }
         public string[] InsurancePeriod { get; set; }
-
         public string PolicySum { get; set; } 
 
         public bool Equals(MortgageData other)
