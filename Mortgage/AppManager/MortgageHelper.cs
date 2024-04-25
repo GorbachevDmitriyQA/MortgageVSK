@@ -113,6 +113,9 @@ namespace MortgageTests
 
         public bool GoToStepProcessingButtonIsActive()
         {
+            //При вычитывании property кнопки "Оформить" с последней версией браузера и драйвера Chrome
+            //вместо False приходит null 
+            //в связи с этим решено для данного задания использовать null для проверки как false 
             bool buttonIsActive = false;
 
             for (int i = 0; i < 3; i++)

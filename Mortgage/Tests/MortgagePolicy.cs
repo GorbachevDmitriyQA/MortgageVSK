@@ -32,8 +32,6 @@ namespace MortgageTests
             app.Mortgage.FillPolicyFields(creationData);
             MortgageData existingData = app.Mortgage.ConditionMortgagePolicyInfo();
             app.MortgageValidator.FillingFieldsMortgageValidate(creationData, existingData);
-
-
         }
     }
 }
